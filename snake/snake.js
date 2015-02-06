@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     // let's save the cell width in a variable for easy control
     var cw = 10;
-    var d = 'right'; // default direction
+    var d;
 
     // let's paint the canvas
     ctx.fillStyle = 'yellow'; // 'white';
@@ -19,7 +19,20 @@ $(document).ready(function () {
     // let's create the snake now
     var snake_array; // an array of cells to make up the snake
 
-    create_snake();
+    function init() {
+        d = 'right'; // default direction
+        create_snake();
+        
+        // let's move the snake now using a timer which will
+        // trigger the paint function every 60 ms
+        if (typeof game_loop != 'undefined'){
+            clearInterval(game_loop);
+        }
+
+        game_loop = setInterval(paint, 60);
+    }
+
+    init();
 
     function create_snake() {
         var length = 5; // length of the snake
@@ -57,10 +70,10 @@ $(document).ready(function () {
 
         // let's add the game over clauses now
         // this will restart the game if the snake hits the wall
-        
-        if (nx == -1 || nx == w/cw || ny == -1 || ny == h/cw){
-          // restart game
-          return;
+
+        if (nx == -1 || nx == w / cw || ny == -1 || ny == h / cw) {
+            // restart game
+            init();
         }
 
         var tail = snake_array.pop(); // pops out the last cell
@@ -88,9 +101,5 @@ $(document).ready(function () {
         else if (key == '40' && d != 'up') d = 'down';
         // the snake is now keyboard controllable
     });
-
-    // let's move the snake now using a timer which will
-    // trigger the paint function every 60 ms
-    game_loop = setInterval(paint, 60);
 
 });
