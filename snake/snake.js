@@ -56,7 +56,7 @@ $(document).ready(function () {
         else if (d == 'down') ny++;
 
         var tail = snake_array.pop(); // pops out the last cell
-        tail.x = nx;
+        tail.x = nx; tail.y = ny;
         snake_array.unshift(tail); // puts back the tail as the first cell
 
         for (var i = 0; i < snake_array.length; i++) {
@@ -69,6 +69,17 @@ $(document).ready(function () {
             ctx.strokeRect(c.x * cw, c.y * cw, cw, cw);
         }
     }
+
+    // let's add the keyboard controls now
+    $(document).keydown(function (e) {
+        var key = e.which;
+        // we will add another clause to prevent reverse gear
+        if (key == '37' && d != 'right') d = 'left';
+        else if (key == '38' && d != 'down') d = 'up';
+        else if (key == '39' && d != 'left') d = 'right';
+        else if (key == '40' && d != 'up') d = 'down';
+        // the snake is now keyboard controllable
+    });
 
     // let's move the snake now using a timer which will
     // trigger the paint function every 60 ms
