@@ -55,6 +55,14 @@ $(document).ready(function () {
         else if (d == 'up') ny--;
         else if (d == 'down') ny++;
 
+        // let's add the game over clauses now
+        // this will restart the game if the snake hits the wall
+        
+        if (nx == -1 || nx == w/cw || ny == -1 || ny == h/cw){
+          // restart game
+          return;
+        }
+
         var tail = snake_array.pop(); // pops out the last cell
         tail.x = nx; tail.y = ny;
         snake_array.unshift(tail); // puts back the tail as the first cell
