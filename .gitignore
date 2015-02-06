@@ -1,0 +1,10 @@
+# Build Folders
+bin
+obj
+_ReSharper.*
+_TeamCity.*
+
+# Visual Studio artifacts
+*.suo
+*.pdb
+*.user
