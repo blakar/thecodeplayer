@@ -9,6 +9,7 @@ $(document).ready(function () {
     // let's save the cell width in a variable for easy control
     var cw = 10;
     var d;
+    var food;
 
     // let's paint the canvas
     ctx.fillStyle = 'yellow'; // 'white';
@@ -22,10 +23,11 @@ $(document).ready(function () {
     function init() {
         d = 'right'; // default direction
         create_snake();
-        
+        create_food();
+
         // let's move the snake now using a timer which will
         // trigger the paint function every 60 ms
-        if (typeof game_loop != 'undefined'){
+        if (typeof game_loop != 'undefined') {
             clearInterval(game_loop);
         }
 
@@ -42,6 +44,17 @@ $(document).ready(function () {
             // this will create a horizontal snake starting from the top left
             snake_array.push({ x: i, y: 0 });
         }
+    }
+
+    // let's create the food now
+    function create_food() {
+        food = {
+            x: Math.random()*(w-cw)/cw,
+            y: Math.random()*(h-cw)/cw,
+        };
+
+        // this will create a cell with x/y between 0-44
+        // because there are 45 (450/10) positions across the rows and columns
     }
 
     // let's paint the snake name
@@ -84,11 +97,19 @@ $(document).ready(function () {
             var c = snake_array[i];
 
             // let's paint 10px wide cells
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(c.x * cw, c.y * cw, cw, cw);
-            ctx.strokeStyle = 'white';
-            ctx.strokeRect(c.x * cw, c.y * cw, cw, cw);
+            paint_cell(c.x, c.y);
         }
+
+        // let's paint the food
+        paint_cell(food.x, food.y);
+    }
+
+    // generic function to draw cells
+    function paint_cell(x, y){
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x * cw, y * cw, cw, cw);
+        ctx.strokeStyle = 'white';
+        ctx.strokeRect (x * cw, y * cw, cw, cw);
     }
 
     // let's add the keyboard controls now
