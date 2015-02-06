@@ -53,6 +53,8 @@
   <ItemGroup>
     <Content Include="snake\readme.txt" />
     <Content Include="snake\snake.htm" />
+    <Content Include="snake\snake.js" />
+    <Content Include="snake\original.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
