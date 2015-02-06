@@ -49,8 +49,8 @@ $(document).ready(function () {
     // let's create the food now
     function create_food() {
         food = {
-            x: Math.random()*(w-cw)/cw,
-            y: Math.random()*(h-cw)/cw,
+            x: Math.round(Math.random()*(w-cw)/cw),
+            y: Math.round(Math.random()*(h-cw)/cw),
         };
 
         // this will create a cell with x/y between 0-44
