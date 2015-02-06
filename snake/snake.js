@@ -6,6 +6,9 @@ $(document).ready(function () {
     var w = $('#canvas').width();
     var h = $('#canvas').height();
 
+    // let's save the cell width in a variable for easy control
+    var cw = 10;
+
     // let's paint the canvas
     ctx.fillStyle = 'yellow'; // 'white';
     ctx.fillRect(0, 0, w, h);
@@ -34,9 +37,9 @@ $(document).ready(function () {
 
             // let's paint 10px wide cells
             ctx.fillStyle = 'blue';
-            ctx.fillRect(c.x * 10, c.y * 10, 10, 10);
+            ctx.fillRect(c.x * cw, c.y * cw, cw, cw);
             ctx.strokeStyle = 'white';
-            ctx.strokeRect(c.x * 10, c.y * 10, 10, 10);
+            ctx.strokeRect(c.x * cw, c.y * cw, cw, cw);
         }
     }
 
