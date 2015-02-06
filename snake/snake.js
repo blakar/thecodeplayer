@@ -32,6 +32,14 @@ $(document).ready(function () {
 
     // let's paint the snake name
     function paint() {
+
+        // to avoid the snake trail we need to paint 
+        // background on every frame
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = 'black';
+        ctx.strokeRect(0, 0, w, h);
+
         // the movement code for the snake to come here
         // the logic is simple: pop out the tail cell and
         // place it in front of the head cell
