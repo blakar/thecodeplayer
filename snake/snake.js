@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     // let's save the cell width in a variable for easy control
     var cw = 10;
+    var d = 'right'; // default direction
 
     // let's paint the canvas
     ctx.fillStyle = 'yellow'; // 'white';
@@ -47,7 +48,12 @@ $(document).ready(function () {
         var ny = snake_array[0].y;
         // these were the position of the head cell. We will
         // increment it to get the new head position
-        nx++;
+
+        // let's add proper direction based movement now
+        if (d == 'right') nx++;
+        else if (d == 'left') nx--;
+        else if (d == 'up') ny--;
+        else if (d == 'down') ny++;
 
         var tail = snake_array.pop(); // pops out the last cell
         tail.x = nx;
