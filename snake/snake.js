@@ -32,6 +32,19 @@ $(document).ready(function () {
 
     // let's paint the snake name
     function paint() {
+        // the movement code for the snake to come here
+        // the logic is simple: pop out the tail cell and
+        // place it in front of the head cell
+        var nx = snake_array[0].x;
+        var ny = snake_array[0].y;
+        // these were the position of the head cell. We will
+        // increment it to get the new head position
+        nx++;
+
+        var tail = snake_array.pop(); // pops out the last cell
+        tail.x = nx;
+        snake_array.unshift(tail); // puts back the tail as the first cell
+
         for (var i = 0; i < snake_array.length; i++) {
             var c = snake_array[i];
 
@@ -43,5 +56,8 @@ $(document).ready(function () {
         }
     }
 
-    paint();
+    // let's move the snake now using a timer which will
+    // trigger the paint function every 60 ms
+    game_loop = setInterval(paint, 60);
+
 });
