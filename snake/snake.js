@@ -87,6 +87,7 @@ $(document).ready(function () {
         if (nx == -1 || nx == w / cw || ny == -1 || ny == h / cw) {
             // restart game
             init();
+            return;
         }
 
         var tail = snake_array.pop(); // pops out the last cell
