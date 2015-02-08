@@ -51,6 +51,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="snake\experimental.htm" />
     <Content Include="snake\readme.txt" />
     <Content Include="snake\snake.htm" />
     <Content Include="snake\snake.js" />
