@@ -13,20 +13,28 @@ $(document).ready(function(){
 	var h = $("#canvas").height();
 	
 	//Lets save the cell width in a variable for easy control
-	var cw = 10;
+	var cw = 5;
 	var d;
 	var food;
 	var score;
     var snake_color;
     var back_color;
     var food_color;
+    var text_color;
     var frame_number;
     var autopilot;
     var movementMode;
     var snake_array;
+    var poison_count;
+    var tail;
+    var poison_probability = 25;
+    var loss_minimum_percentage = 10;
+    var loss_maximum_percentage = 50;
+    var changed_color;
+    var changed_color_turns = 250;
 	
 	//Lets create the snake now
-	var snake_array; //an array of cells to make up the snake
+	//var snake_array; //an array of cells to make up the snake
 	
 	function init()
 	{
@@ -38,9 +46,13 @@ $(document).ready(function(){
         snake_color = "blue";
         back_color = "yellow";
         food_color = "green";
+        text_color = "navy";
         frame_number = 0;
         autopilot = true;
         movementMode = "target";
+        poison_count = 0;
+        changed_color = 0;
+        
 		
 		//Lets move the snake now using a timer which will trigger the paint function
 		//every 60ms
@@ -142,10 +154,29 @@ $(document).ready(function(){
 		//Create a new head instead of moving the tail
 		if(nx == food.x && ny == food.y)
 		{
-			var tail = {x: nx, y: ny};
-			score++;
-			//Create new food
-			create_food();
+            // some of the food is actually a poison -- in that case
+            // snake loses 10% of its length from the tail position
+            var poison = Math.random()*100 < poison_probability; 
+            if (poison){
+                //var loss = Math.round(snake_array.length * 0.1);
+                var loss_percentage = loss_minimum_percentage + Math.random()*(loss_maximum_percentage - loss_minimum_percentage);
+                var loss = Math.round(snake_array.length * loss_percentage / 100);
+                
+                if (loss > 0){
+                    score-= loss;
+                    for(var j = 0; j < loss; ++j){ snake_array.pop(); }
+                    poison_count++;
+                    tail = {x: snake_array[0].x, y: snake_array[0].y};
+                }
+                create_food();
+            }
+            else
+            {
+			    tail = {x: nx, y: ny};
+			    score+=100;
+			    //Create new food
+			    create_food();
+            }
 		}
 		else
 		{
@@ -162,11 +193,14 @@ $(document).ready(function(){
 			//Lets paint 10px wide cells
 			paint_cell(c.x, c.y, true);
 		}
+
+        if (changed_color > 0) { changed_color--; }
 		
 		//Lets paint the food
 		paint_cell(food.x, food.y, false);
 		//Lets paint the score
-		var score_text = "Score: " + score + "     Frame: " + frame_number;
+        ctx.fillStyle = text_color;
+		var score_text = "Score: " + score  + "   Length: " + snake_array.length + "     Frame: " + frame_number + "   Poison: " + poison_count;
 		ctx.fillText(score_text, 5, h-5);
 
         if (autopilot) {
@@ -178,6 +212,9 @@ $(document).ready(function(){
 	function paint_cell(x, y, is_snake)
 	{
 		ctx.fillStyle = is_snake ? snake_color : food_color;
+        if (is_snake && changed_color > 0){
+            ctx.fillStyle = 'red';
+        }
 		ctx.fillRect(x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "white";
 		ctx.strokeRect(x*cw, y*cw, cw, cw);
@@ -207,24 +244,6 @@ $(document).ready(function(){
 
     function switch_direction_target()
     {
-        /*var which =  Math.round(Math.random()*2) % 2 == 0;
-        if (snake_array[0].x != food.x &&
-            snake_array[0].y != food.y){
-
-            if (snake_array[0].x > food.x){
-                if (d != 'left' && d != 'right' && which == 0) d = 'left';
-            }
-            else if (snake_array[0].x < food.x){
-                if (d != 'right' && d != 'left' && which == 0) d = 'right';
-            }
-            else if (snake_array[0].y > food.y){
-                if (d != 'down'&& d != 'up' && which == 1) d = 'down';
-            }
-            else if (snake_array[0].y < food.y){
-                if (d != 'up' && d != 'down' && which == 1) d = 'up';
-            }
-         }*/
-
          var dx = snake_array[0].x - food.x;
          var dy = snake_array[0].y - food.y;
          if (dx < 0) dx = -1 *dx;
@@ -273,7 +292,8 @@ $(document).ready(function(){
 		{
 			if(array[i].x == x && array[i].y == y){
 			 //return true;
-             snake_color = "red";
+             //snake_color = "red";
+             changed_color = changed_color_turns;
              }
 		}
 		
