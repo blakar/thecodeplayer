@@ -1,8 +1,15 @@
-﻿<!-- Lets make a simple snake game -->
+﻿<!doctype html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<!-- Lets make a simple snake game -->
+</head>
+<body>
 <canvas id="canvas" width="450" height="450"></canvas>
 
 <!-- Jquery -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" type="text/javascript"></script>
 
 <script>
 $(document).ready(function(){
@@ -158,6 +165,7 @@ $(document).ready(function(){
             // snake loses 10% of its length from the tail position
             var poison = Math.random()*100 < poison_probability; 
             if (poison){
+                toastr.error('Oops! I just ate poison');
                 //var loss = Math.round(snake_array.length * 0.1);
                 var loss_percentage = loss_minimum_percentage + Math.random()*(loss_maximum_percentage - loss_minimum_percentage);
                 var loss = Math.round(snake_array.length * loss_percentage / 100);
@@ -202,6 +210,14 @@ $(document).ready(function(){
         ctx.fillStyle = text_color;
 		var score_text = "Score: " + score  + "   Length: " + snake_array.length + "     Frame: " + frame_number + "   Poison: " + poison_count;
 		ctx.fillText(score_text, 5, h-5);
+
+        if (frame_number % 1000 == 0){
+            toastr.success('Another 1000 of frames passed');
+        }
+
+        if (length > 20){
+            toastr.success('Pretty long!');
+        }
 
         if (autopilot) {
           switch_direction();
@@ -294,6 +310,7 @@ $(document).ready(function(){
 			 //return true;
              //snake_color = "red";
              changed_color = changed_color_turns;
+             toastr.info('Yikes, I crossed over myself');
              }
 		}
 		
@@ -320,3 +337,4 @@ $(document).ready(function(){
 })
 
 </script>
+</body>
